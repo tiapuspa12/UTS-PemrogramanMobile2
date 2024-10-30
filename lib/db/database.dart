@@ -17,11 +17,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // Mendapatkan direktori penyimpanan aplikasi
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = '${documentsDirectory.path}/user_database.db';
 
-    // Membuka atau membuat database
     return await openDatabase(
       path,
       version: 1,
@@ -30,6 +28,7 @@ class DatabaseHelper {
           CREATE TABLE users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
+            password TEXT,
             name TEXT,
             email TEXT,
             address TEXT,
@@ -40,38 +39,63 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> insertUser(Map<String, dynamic> user) async {
+  // Method for user registration
+  Future<int> registerUser(Map<String, dynamic> user) async {
     try {
       final db = await database;
       return await db.insert('users', user);
     } catch (e) {
       print("Error inserting user: $e");
-      return -1; // Return -1 jika terjadi error
+      return -1;
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUsers() async {
-    try {
-      final db = await database;
-      return await db.query('users');
-    } catch (e) {
-      print("Error retrieving users: $e");
-      return [];
-    }
-  }
-
-  Future<Map<String, dynamic>?> getUser(String username) async {
+  // Method for user login
+  Future<Map<String, dynamic>?> loginUser(
+      String username, String password) async {
     try {
       final db = await database;
       final List<Map<String, dynamic>> users = await db.query(
         'users',
-        where: 'username = ?',
-        whereArgs: [username],
+        where: 'username = ? AND password = ?',
+        whereArgs: [username, password],
       );
       return users.isNotEmpty ? users.first : null;
     } catch (e) {
       print("Error retrieving user: $e");
       return null;
+    }
+  }
+
+  // Function to get user by ID
+  Future<Map<String, dynamic>?> getUserById(int id) async {
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> users = await db.query(
+        'users',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      return users.isNotEmpty ? users.first : null;
+    } catch (e) {
+      print("Error retrieving user by id: $e");
+      return null;
+    }
+  }
+
+  // Method to update user data
+  Future<int> updateUser(int id, Map<String, dynamic> user) async {
+    try {
+      final db = await database;
+      return await db.update(
+        'users',
+        user,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      print("Error updating user: $e");
+      return -1; // Return -1 if there's an error
     }
   }
 }
