@@ -5,7 +5,7 @@ import 'login.dart';
 import 'package:tia_pemmob2/halaman/setting.dart';
 
 class DashboardPage extends StatefulWidget {
-  late final int userId;
+  final int userId;
 
   DashboardPage({required this.userId});
 
@@ -14,7 +14,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  late Map<String, dynamic> _userData;
+  Map<String, dynamic>? _userData;
   bool _isLoading = true;
 
   @override
@@ -24,21 +24,20 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _fetchUserData() async {
+    setState(() => _isLoading = true); // Memastikan loading dimulai ulang
     DatabaseHelper db = DatabaseHelper();
     final userData = await db.getUserById(widget.userId);
-    if (userData != null) {
-      setState(() {
+
+    setState(() {
+      if (userData != null) {
         _userData = userData;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal memuat data pengguna.')),
-      );
-    }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Gagal memuat data pengguna.')),
+        );
+      }
+      _isLoading = false;
+    });
   }
 
   Future<void> _navigateToSettings() async {
@@ -50,10 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
 
     if (userId != null) {
-      setState(() {
-        widget.userId = userId;
-      });
-      _fetchUserData();
+      await _fetchUserData();
     }
   }
 
@@ -67,15 +63,13 @@ class _DashboardPageState extends State<DashboardPage> {
           actions: [
             TextButton(
               child: const Text('Batal'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('Logout'),
               onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog
-                _logout(); // Panggil fungsi logout
+                Navigator.of(context).pop();
+                _logout();
               },
             ),
           ],
@@ -106,7 +100,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: _showLogoutConfirmation, // Menggunakan konfirmasi logout
+            onPressed: _showLogoutConfirmation,
             tooltip: 'Logout',
           ),
         ],
@@ -130,8 +124,7 @@ class _DashboardPageState extends State<DashboardPage> {
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Container(
-                  height:
-                      MediaQuery.of(context).size.height, // Tinggi sesuai layar
+                  height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -148,27 +141,28 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AnimatedTextKit(
-                          animatedTexts: [
-                            TypewriterAnimatedText(
-                              'Selamat datang, ${_userData['name']}!',
-                              textStyle: const TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                        if (_userData != null)
+                          AnimatedTextKit(
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                'Selamat datang, ${_userData!['name'] ?? 'Pengguna'}',
+                                textStyle: const TextStyle(
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                speed: const Duration(milliseconds: 100),
                               ),
-                              speed: const Duration(milliseconds: 100),
-                            ),
-                          ],
-                          totalRepeatCount: 1,
-                        ),
+                            ],
+                            totalRepeatCount: 1,
+                          ),
                         const SizedBox(height: 30),
-                        _buildInfoRow('Username', _userData['username']),
-                        _buildInfoRow('Email', _userData['email']),
+                        _buildInfoRow('Username', _userData?['username'] ?? ''),
+                        _buildInfoRow('Email', _userData?['email'] ?? ''),
                         _buildInfoRow(
-                            'Alamat', _userData['address'] ?? "Belum diisi"),
+                            'Alamat', _userData?['address'] ?? 'Belum diisi'),
                         _buildInfoRow(
-                            'Telepon', _userData['phone'] ?? "Belum diisi"),
+                            'Telepon', _userData?['phone'] ?? 'Belum diisi'),
                       ],
                     ),
                   ),

@@ -39,7 +39,7 @@ class _SettingPageState extends State<SettingPage> {
         _isLoading = false;
       });
     } else {
-      _showErrorSnackbar('Error loading user data.');
+      _showErrorSnackbar('Gagal memuat data pengguna.');
     }
   }
 
@@ -55,21 +55,21 @@ class _SettingPageState extends State<SettingPage> {
 
       final result = await db.updateUser(widget.userId, updatedUser);
       if (result > 0) {
-        _showSuccessSnackbar('User data updated successfully!');
-        Navigator.pop(context); // Return to the previous page
+        _showSuccessSnackbar('Data pengguna berhasil diperbarui!');
+        Navigator.pop(context); // Kembali ke halaman sebelumnya
       } else {
-        _showErrorSnackbar('Failed to update user data.');
+        _showErrorSnackbar('Gagal memperbarui data pengguna.');
       }
     }
   }
 
   bool _validateInputs() {
     if (_nameController.text.isEmpty) {
-      _showErrorSnackbar('Name cannot be empty.');
+      _showErrorSnackbar('Nama tidak boleh kosong.');
       return false;
     }
     if (_emailController.text.isEmpty || !_emailController.text.contains('@')) {
-      _showErrorSnackbar('Please enter a valid email address.');
+      _showErrorSnackbar('Harap masukkan alamat email yang valid.');
       return false;
     }
     return true;
@@ -91,7 +91,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Pengaturan'),
         iconTheme: const IconThemeData(color: Colors.white),
         titleTextStyle: const TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 21),
@@ -115,14 +115,14 @@ class _SettingPageState extends State<SettingPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildTextField(_nameController, 'Name'),
+                    _buildTextField(_nameController, 'Nama'),
                     const SizedBox(height: 16),
                     _buildTextField(_emailController, 'Email',
                         keyboardType: TextInputType.emailAddress),
                     const SizedBox(height: 16),
-                    _buildTextField(_addressController, 'Address'),
+                    _buildTextField(_addressController, 'Alamat'),
                     const SizedBox(height: 16),
-                    _buildTextField(_phoneController, 'Phone',
+                    _buildTextField(_phoneController, 'Telepon',
                         keyboardType: TextInputType.phone),
                     const SizedBox(height: 20),
                     const Spacer(),
@@ -135,7 +135,7 @@ class _SettingPageState extends State<SettingPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 32, vertical: 12),
                       ),
-                      child: const Text('Update'),
+                      child: const Text('Perbarui'),
                     ),
                   ],
                 ),
@@ -148,10 +148,10 @@ class _SettingPageState extends State<SettingPage> {
       {TextInputType keyboardType = TextInputType.text}) {
     return TextField(
       controller: controller,
-      style: const TextStyle(fontSize: 18), // Set font size
+      style: const TextStyle(fontSize: 18), // Ukuran font
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(fontSize: 16), // Set font size for label
+        labelStyle: const TextStyle(fontSize: 16), // Ukuran font label
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
           borderSide: BorderSide(color: Colors.grey),

@@ -29,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login gagal. Periksa kredensial Anda.')),
+        const SnackBar(
+            content: Text('Login gagal. Periksa Username dan Password anda')),
       );
     }
   }
@@ -72,6 +73,16 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Text(
+                  'Selamat Datang',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
                 _buildTextField(_usernameController, 'Username'),
                 const SizedBox(height: 16),
                 _buildTextField(_passwordController, 'Password',
@@ -101,6 +112,8 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold), // Teks putih dan bold
                   ),
+                  icon: const Icon(Icons.arrow_forward,
+                      color: Colors.white), // Menambahkan ikon pada TextButton
                 ),
               ],
             ),
@@ -128,7 +141,8 @@ class _LoginPageState extends State<LoginPage> {
           borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(100)),
+          borderRadius: BorderRadius.all(
+              Radius.circular(15)), // Mengubah radius untuk border fokus
           borderSide: BorderSide(color: Color.fromARGB(255, 235, 49, 194)),
         ),
         filled: true,
