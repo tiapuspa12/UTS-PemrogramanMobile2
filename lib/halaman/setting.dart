@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tia_pemmob2/db/database.dart';
 
 class SettingPage extends StatefulWidget {
@@ -15,6 +18,8 @@ class _SettingPageState extends State<SettingPage> {
   late TextEditingController _emailController;
   late TextEditingController _addressController;
   late TextEditingController _phoneController;
+
+  String? photoUrl;
   bool _isLoading = true;
 
   @override
@@ -36,6 +41,7 @@ class _SettingPageState extends State<SettingPage> {
         _emailController.text = userData['email'];
         _addressController.text = userData['address'] ?? '';
         _phoneController.text = userData['phone'] ?? '';
+        photoUrl = userData['foto']; // Load foto dari database
         _isLoading = false;
       });
     } else {
@@ -51,15 +57,27 @@ class _SettingPageState extends State<SettingPage> {
         'email': _emailController.text,
         'address': _addressController.text,
         'phone': _phoneController.text,
+        'foto': photoUrl ?? 'assets/default_avatar.jpeg', // Simpan foto
       };
 
       final result = await db.updateUser(widget.userId, updatedUser);
       if (result > 0) {
         _showSuccessSnackbar('Data pengguna berhasil diperbarui!');
-        Navigator.pop(context); // Kembali ke halaman sebelumnya
+        Navigator.pop(context);
       } else {
         _showErrorSnackbar('Gagal memperbarui data pengguna.');
       }
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        photoUrl = pickedImage.path;
+      });
     }
   }
 
@@ -91,53 +109,92 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: const Text('Pengaturan'),
         iconTheme: const IconThemeData(color: Colors.white),
         titleTextStyle: const TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 21),
-        backgroundColor: const Color.fromARGB(196, 219, 12, 153),
+        backgroundColor: Colors.teal,
       ),
+      resizeToAvoidBottomInset: true, // Menghindari layout terdorong
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.deepPurple[100]!,
-                    const Color.fromARGB(255, 244, 90, 170),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/bg1.jpg'),
+                  fit: BoxFit.cover,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildTextField(_nameController, 'Nama'),
-                    const SizedBox(height: 16),
-                    _buildTextField(_emailController, 'Email',
-                        keyboardType: TextInputType.emailAddress),
-                    const SizedBox(height: 16),
-                    _buildTextField(_addressController, 'Alamat'),
-                    const SizedBox(height: 16),
-                    _buildTextField(_phoneController, 'Telepon',
-                        keyboardType: TextInputType.phone),
-                    const SizedBox(height: 20),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: _updateUserData,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 231, 55, 140),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 12),
+              child: SingleChildScrollView(
+                // Tambahkan ScrollView
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            CircleAvatar(
+                              radius: 70,
+                              backgroundImage:
+                                  (photoUrl != null && photoUrl!.isNotEmpty)
+                                      ? FileImage(File(photoUrl!))
+                                      : const AssetImage(
+                                              'assets/default_avatar.jpeg')
+                                          as ImageProvider,
+                              backgroundColor: Colors.grey.shade300,
+                              child: photoUrl == null
+                                  ? const Icon(
+                                      Icons.account_circle,
+                                      size: 50,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+                            const Positioned(
+                              bottom: 0,
+                              right: 4,
+                              child: CircleAvatar(
+                                radius: 14,
+                                backgroundColor: Colors.blueAccent,
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  size: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: const Text('Perbarui'),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      _buildTextField(_nameController, 'Nama'),
+                      const SizedBox(height: 16),
+                      _buildTextField(_emailController, 'Email',
+                          keyboardType: TextInputType.emailAddress),
+                      const SizedBox(height: 16),
+                      _buildTextField(_addressController, 'Alamat'),
+                      const SizedBox(height: 16),
+                      _buildTextField(_phoneController, 'Telepon',
+                          keyboardType: TextInputType.phone),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _updateUserData,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal.shade800,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 12),
+                        ),
+                        child: const Text('Perbarui'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -148,10 +205,10 @@ class _SettingPageState extends State<SettingPage> {
       {TextInputType keyboardType = TextInputType.text}) {
     return TextField(
       controller: controller,
-      style: const TextStyle(fontSize: 18), // Ukuran font
+      style: const TextStyle(fontSize: 18),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(fontSize: 16), // Ukuran font label
+        labelStyle: const TextStyle(fontSize: 16),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
           borderSide: BorderSide(color: Colors.grey),

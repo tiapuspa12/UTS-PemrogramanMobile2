@@ -39,32 +39,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.teal,
         title: const Text('Login',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        iconTheme: const IconThemeData(
-            color: Colors.white), // Mengatur warna ikon menjadi putih
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(196, 189, 11, 133),
-                const Color.fromARGB(196, 189, 11, 133),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(234, 238, 53, 179),
-              const Color.fromARGB(255, 243, 177, 177),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg1.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(
@@ -91,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 231, 55, 140),
+                    backgroundColor: Colors.teal.shade800,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 12),
@@ -138,12 +122,12 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold), // Set font size and weight for label
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(15)),
-          borderSide: BorderSide(color: Colors.grey),
+          borderSide: BorderSide(color: Colors.teal),
         ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
               Radius.circular(15)), // Mengubah radius untuk border fokus
-          borderSide: BorderSide(color: Color.fromARGB(255, 235, 49, 194)),
+          borderSide: BorderSide(color: Colors.teal),
         ),
         filled: true,
         fillColor: Colors.white,

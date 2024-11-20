@@ -32,7 +32,8 @@ class DatabaseHelper {
             name TEXT,
             email TEXT,
             address TEXT,
-            phone TEXT
+            phone TEXT,
+            foto TEXT
           )
         ''');
       },

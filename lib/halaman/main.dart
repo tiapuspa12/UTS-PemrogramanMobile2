@@ -1,37 +1,42 @@
+//Tia Puspita Sari
+//21552011014
+//Pemrograman Mobile 2
+//Aplikasi untuk Membantu Sekertaris dalam Mengelola Penjadwalan dan Dokumen
+
 import 'package:flutter/material.dart';
 import 'package:tia_pemmob2/halaman/login.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const SecretPro());
 }
 
-class MyApp extends StatelessWidget {
+class SecretPro extends StatelessWidget {
+  const SecretPro({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login App',
+      title: 'SecretPro',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false, // Hapus debug banner
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(234, 238, 53, 179),
-              Color.fromARGB(255, 243, 177, 177),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+          image: DecorationImage(
+            image: AssetImage('assets/bg1.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Center(
@@ -56,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 231, 55, 140),
+                  backgroundColor: Colors.teal.shade800,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -64,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  'Login',
+                  'Masuk',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
