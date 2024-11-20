@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Selamat Datang di Aplikasi Tia ;)',
+                'Selamat Datang di Aplikasi SecretPro',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
