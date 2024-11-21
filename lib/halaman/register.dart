@@ -12,6 +12,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
   void _register() async {
     if (_usernameController.text.isEmpty ||
         _passwordController.text.isEmpty ||
@@ -73,42 +74,44 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Daftar Sekarang',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Daftar Sekarang',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24), // Menambahkan jarak di sini
-                _buildTextField(_usernameController, 'Username'),
-                const SizedBox(height: 16),
-                _buildTextField(_passwordController, 'Password',
-                    obscureText: true),
-                const SizedBox(height: 16),
-                _buildTextField(_nameController, 'Name'),
-                const SizedBox(height: 16),
-                _buildTextField(_emailController, 'Email'),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade800,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 12),
+                  const SizedBox(height: 24),
+                  _buildTextField(_usernameController, 'Username'),
+                  const SizedBox(height: 16),
+                  _buildTextField(_passwordController, 'Password',
+                      obscureText: true),
+                  const SizedBox(height: 16),
+                  _buildTextField(_nameController, 'Name'),
+                  const SizedBox(height: 16),
+                  _buildTextField(_emailController, 'Email'),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal.shade800,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 12),
+                    ),
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -127,14 +130,18 @@ class _RegisterPageState extends State<RegisterPage> {
       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          borderSide: BorderSide(color: Colors.grey),
+        labelStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.teal,
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(100)),
-          borderSide: BorderSide(color: Color.fromARGB(255, 235, 49, 194)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.teal),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.teal.shade900, width: 2),
         ),
         filled: true,
         fillColor: Colors.white,

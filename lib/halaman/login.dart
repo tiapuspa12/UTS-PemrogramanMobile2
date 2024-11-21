@@ -41,8 +41,10 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.teal,
-        title: const Text('Login',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Login',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -119,15 +121,15 @@ class _LoginPageState extends State<LoginPage> {
         labelText: label,
         labelStyle: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold), // Set font size and weight for label
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          borderSide: BorderSide(color: Colors.teal),
+            fontWeight: FontWeight.bold,
+            color: Colors.teal), // Label berwarna teal gelap
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderSide: BorderSide(color: Colors.teal.shade700),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-              Radius.circular(15)), // Mengubah radius untuk border fokus
-          borderSide: BorderSide(color: Colors.teal),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderSide: BorderSide(color: Colors.teal.shade900, width: 2),
         ),
         filled: true,
         fillColor: Colors.white,

@@ -68,6 +68,75 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+// Header Section with Greeting
+  Widget _buildHeaderSection() {
+    // Memastikan data pengguna sudah tersedia dan aman untuk diakses
+    final String userName = _userData?['name'] ?? 'Pengguna';
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: Colors.teal.shade100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Selamat Datang,',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+              Text(
+                userName, // Menampilkan nama pengguna yang lebih aman
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          // Menambahkan CircleAvatar dengan gaya yang konsisten
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 90, // Sesuaikan ukuran dengan radius CircleAvatar
+                height: 90, // Sesuaikan ukuran dengan radius CircleAvatar
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.teal, // Warna border teal
+                    width: 2, // Lebar border
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black
+                          .withOpacity(0.2), // Warna shadow dengan transparansi
+                      spreadRadius: 3, // Jarak penyebaran shadow
+                      blurRadius: 8, // Blur shadow untuk efek kedalaman
+                      offset: const Offset(0, 4), // Posisi shadow (x, y)
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
+                  radius: 70,
+                  backgroundColor: Colors.white,
+                  backgroundImage:
+                      (_userData != null && _userData?['foto'] != null)
+                          ? FileImage(File(_userData?['foto']))
+                          : const AssetImage('assets/pp1.png') as ImageProvider,
+                  child: (_userData != null && _userData?['foto'] == null)
+                      ? const Icon(Icons.person, size: 65, color: Colors.grey)
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildDrawer(BuildContext context) {
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.52,
@@ -110,18 +179,37 @@ class _DashboardPageState extends State<DashboardPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                        (_userData != null && _userData?['foto'] != null)
-                            ? FileImage(File(_userData?[
-                                'foto'])) // Menggunakan File untuk foto lokal
-                            : const AssetImage('assets/default_profile.png')
-                                as ImageProvider,
-                    child: (_userData != null && _userData?['foto'] == null)
-                        ? const Icon(Icons.person, size: 65, color: Colors.grey)
-                        : null,
+                  Container(
+                    width: 140, // Sesuaikan ukuran dengan radius CircleAvatar
+                    height: 140, // Sesuaikan ukuran dengan radius CircleAvatar
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.teal, // Warna border teal
+                        width: 4, // Lebar border
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(
+                              0.2), // Warna shadow dengan transparansi
+                          spreadRadius: 3, // Jarak penyebaran shadow
+                          blurRadius: 8, // Blur shadow untuk efek kedalaman
+                          offset: const Offset(0, 4), // Posisi shadow (x, y)
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundColor: Colors.white,
+                      backgroundImage: (_userData != null &&
+                              _userData?['foto'] != null)
+                          ? FileImage(File(_userData?['foto']))
+                          : const AssetImage('assets/pp1.png') as ImageProvider,
+                      child: (_userData != null && _userData?['foto'] == null)
+                          ? const Icon(Icons.person,
+                              size: 65, color: Colors.grey)
+                          : null,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -160,7 +248,6 @@ class _DashboardPageState extends State<DashboardPage> {
               onTap: () => Navigator.pop(context),
               iconColor: Colors.white,
               textColor: Colors.white,
-              tileColor: Colors.deepPurple.shade600,
             ),
             customListTile(
               icon: Icons.assignment_rounded,
@@ -169,7 +256,6 @@ class _DashboardPageState extends State<DashboardPage> {
               destinationPage: const ManajemenDokumen(),
               iconColor: Colors.white,
               textColor: Colors.white,
-              tileColor: Colors.deepPurple.shade600,
             ),
             customListTile(
               icon: Icons.calendar_month_outlined,
@@ -178,7 +264,6 @@ class _DashboardPageState extends State<DashboardPage> {
               destinationPage: const Manajementugas(),
               iconColor: Colors.white,
               textColor: Colors.white,
-              tileColor: Colors.deepPurple.shade600,
             ),
             customListTile(
               icon: Icons.account_box_sharp,
@@ -379,6 +464,25 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+  // Data untuk GridView
+  final List<Map<String, dynamic>> features = [
+    {'title': 'Jadwal', 'icon': Icons.calendar_today, 'color': Colors.blue},
+    {'title': 'Dokumen', 'icon': Icons.folder, 'color': Colors.orange},
+    {'title': 'Kontak', 'icon': Icons.contact_phone, 'color': Colors.green},
+    {'title': 'Laporan', 'icon': Icons.bar_chart, 'color': Colors.purple},
+    {'title': 'Pesan', 'icon': Icons.message, 'color': Colors.teal},
+    {'title': 'Pengaturan', 'icon': Icons.settings, 'color': Colors.red},
+  ];
+
+  // Data untuk ListView
+  final List<Map<String, String>> activities = [
+    {'title': 'Aktivitas 1', 'description': 'Deskripsi aktivitas 1'},
+    {'title': 'Aktivitas 2', 'description': 'Deskripsi aktivitas 2'},
+    {'title': 'Aktivitas 3', 'description': 'Deskripsi aktivitas 3'},
+    {'title': 'Aktivitas 4', 'description': 'Deskripsi aktivitas 4'},
+    {'title': 'Aktivitas 5', 'description': 'Deskripsi aktivitas 5'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -416,15 +520,21 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        textAlign: TextAlign.center,
-                        'Selamat datang, ${_userData?['name'] ?? 'Pengguna'}',
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      // Section: Header Greeting
+                      _buildHeaderSection(),
+
+                      const SizedBox(height: 16),
+
+                      // Divider for separation
+                      const Divider(
+                        color: Colors.teal,
+                        thickness: 1.5,
+                        indent: 16,
+                        endIndent: 16,
                       ),
                       const SizedBox(height: 16),
+
+                      // Section: Tips Penggunaan
                       const Row(
                         children: [
                           Icon(
@@ -457,6 +567,49 @@ class _DashboardPageState extends State<DashboardPage> {
                         '4. Buat jadwal acara/kegiatan di Penjadwalan Kegiatan',
                         style: TextStyle(fontSize: 14),
                       ),
+                      const SizedBox(height: 15),
+
+                      // Divider before Quick Access
+                      const Divider(
+                        color: Colors.teal,
+                        thickness: 1.5,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Section: Akses Cepat
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'Akses Cepat',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildFeatureGrid(features),
+                      const SizedBox(height: 15),
+                      // Divider before Recent Activities
+                      const Divider(
+                        color: Colors.teal,
+                        thickness: 1.5,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
+                      const SizedBox(height: 15),
+
+                      // Section: Aktivitas Terbaru
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                        child: Text(
+                          'Aktivitas Terbaru',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      _buildActivityList(activities),
                     ],
                   ),
                 ),
@@ -475,7 +628,7 @@ Widget customListTile({
   required BuildContext context,
   Color iconColor = Colors.white,
   Color textColor = Colors.white,
-  Color tileColor = Colors.deepPurple,
+  Color tileColor = Colors.teal,
   VoidCallback? onTap, // Callback opsional untuk aksi
   Widget? destinationPage, // Halaman tujuan opsional
 }) {
@@ -496,5 +649,87 @@ Widget customListTile({
             );
           }
         },
+  );
+}
+
+// Widget Method: GridView for Quick Access Features
+Widget _buildFeatureGrid(List<Map<String, dynamic>> features) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    child: GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: features.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+      ),
+      itemBuilder: (context, index) {
+        final feature = features[index];
+        return GestureDetector(
+          onTap: () {
+            // Add Navigation or Feature Logic Here
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: feature['color'],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  feature['icon'],
+                  size: 32,
+                  color: Colors.white,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  feature['title'],
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+// Widget Method: ListView for Recent Activities
+Widget _buildActivityList(List<Map<String, String>> activities) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: activities.length,
+    itemBuilder: (context, index) {
+      final activity = activities[index];
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        elevation: 2,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.teal.shade800,
+            child: const Icon(Icons.event_note, color: Colors.white),
+          ),
+          title: Text(
+            activity['title'] ?? '',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(activity['description'] ?? ''),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: () {
+            // Add navigation or action here
+          },
+        ),
+      );
+    },
   );
 }
