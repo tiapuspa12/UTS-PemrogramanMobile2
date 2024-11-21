@@ -124,10 +124,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   backgroundImage:
                       (_userData != null && _userData?['foto'] != null)
                           ? FileImage(File(_userData?['foto']))
-                          : const AssetImage('assets/pp1.png') as ImageProvider,
-                  child: (_userData != null && _userData?['foto'] == null)
-                      ? const Icon(Icons.person, size: 65, color: Colors.grey)
-                      : null,
+                          : const AssetImage('assets/pp.png') as ImageProvider,
                 ),
               ),
             ],
@@ -204,11 +201,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       backgroundImage: (_userData != null &&
                               _userData?['foto'] != null)
                           ? FileImage(File(_userData?['foto']))
-                          : const AssetImage('assets/pp1.png') as ImageProvider,
-                      child: (_userData != null && _userData?['foto'] == null)
-                          ? const Icon(Icons.person,
-                              size: 65, color: Colors.grey)
-                          : null,
+                          : const AssetImage('assets/pp.png') as ImageProvider,
                     ),
                   ),
                   const SizedBox(height: 16),

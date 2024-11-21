@@ -79,17 +79,13 @@ class _DatadiriState extends State<Datadiri> {
                         // Foto Profil
                         CircleAvatar(
                           radius: 80,
-                          backgroundColor: Colors.grey.shade300,
-                          backgroundImage: user['foto'] != null &&
-                                  user['foto'].isNotEmpty
+                          backgroundImage: (user['foto'] != null &&
+                                  File(user['foto']).existsSync())
                               ? FileImage(File(user['foto']))
-                              : const AssetImage('assets/default_profile.png')
+                              : const AssetImage('assets/pp.png')
                                   as ImageProvider,
-                          child: user['foto'] == null || user['foto'].isEmpty
-                              ? const Icon(Icons.person,
-                                  size: 65, color: Colors.grey)
-                              : null,
                         ),
+
                         const SizedBox(height: 16),
                         // Nama
                         Text(
